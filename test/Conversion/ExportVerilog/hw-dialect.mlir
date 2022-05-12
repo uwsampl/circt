@@ -928,6 +928,13 @@ hw.module @renameKeyword(%a: !hw.struct<repeat: i1, repeat_0: i1>) -> (r1: !hw.s
   hw.output %a : !hw.struct<repeat: i1, repeat_0: i1>
 }
 
+// CHECK-LABEL: checkNamedLocNotPrinted
+hw.module @checkNamedLocNotPrinted(%a: i2) -> (b:i2){
+// CHECK-NOT: dont_print_locations
+  %0 = comb.add %a, %a : i2 loc(""("dont_print_locations":0:0))
+  hw.output %0: i2
+}
+
 // CHECK-LABEL: useRenamedStruct(
 // CHECK-NEXT:  inout  struct packed {logic repeat_0; logic repeat_0_1; } a,
 // CHECK-NEXT:  output                                                    r1,
