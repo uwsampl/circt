@@ -266,31 +266,3 @@ def WUW_PortOrder : I32EnumAttrCase<"PortOrder", 1>;
 def WUWAttr : I32EnumAttr<"WUW", "Write Under Write Behavior",
                           [WUW_Undefined, WUW_PortOrder]>;
 }
-
-def InvisibleLoc: AttrDef<HWDialect, "InvisibleLoc", [], "::mlir::LocationAttr"> {
-  let summary = "A source location which is invisible in output verilog";
-  let description = [{
-    Syntax:
-
-    ```
-    name-location ::= string-literal (`(` location `)`)?
-    ```
-
-    An instance of this location allows for attaching a name to a child location.
-    This can be useful for representing the locations of variable, or node,
-    definitions.
-
-    Example:
-
-    ```mlir
-    loc("CSE"("mysource.cc":10:8))
-    ```
-  }];
-  let parameters = (ins "mlir::Location":$childLoc);
-  let builders = [
-    AttrBuilderWithInferredContext<(ins "mlir::Location":$childLoc), [{
-      return $_get(childLoc.getContext(), childLoc);
-    }]>
-  ];
-  let skipDefaultBuilders = 1;
-}

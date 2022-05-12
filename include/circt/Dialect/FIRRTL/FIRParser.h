@@ -42,11 +42,11 @@ struct FIRParserOptions {
 
   /// If true, source locations of a fir file are wrapped by `NamedLoc`
   /// to omit locations at ExportVerilog.
-  /// FIXME: It is hacky to rely on the fact that `NamedLoc` being not
-  /// printed at ExportVerilog. We should instead introduce a custom source
-  /// location attribute, such as `InvisibleLocAttr` to explicitly indicate that
-  /// source locators should not be printed. Currently it is not possible since
-  /// MLIR source locators are not customizable.
+  /// FIXME: It is hacky to rely on the fact that `NamedLoc` is not printed at
+  /// ExportVerilog. We should instead introduce a custom source location
+  /// attribute, such as `InvisibleLocAttr` to explicitly indicate that source
+  /// locators should not be printed. Currently, it is not possible since MLIR
+  /// source locators are not customizable.
   bool makeFileLocatorsInvisible = true;
 };
 
