@@ -271,7 +271,11 @@ struct FIRParser {
   /// Encode the specified source location information into an attribute for
   /// attachment to the IR.
   Location translateLocation(llvm::SMLoc loc) {
-    return lexer.translateLocation(loc);
+    auto location = lexer.translateLocation(loc);
+    if (constants.options.makeFileLocatorsInvisible)
+      return hw::InvisibleLocAttr::get(location);
+
+    return location;
   }
 
   /// Parse an @info marker if present.  If so, fill in the specified Location,

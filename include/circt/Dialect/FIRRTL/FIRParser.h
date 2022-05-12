@@ -39,6 +39,10 @@ struct FIRParserOptions {
   /// This, along with numOMIRFiles provides structure to the buffers in the
   /// source manager.
   unsigned numAnnotationFiles;
+
+  /// If true, source locations of a fir file are wrapped by `InvisibleLoc`
+  /// to omit locations at ExportVerilog.
+  bool makeFileLocatorsInvisible = true;
 };
 
 mlir::OwningOpRef<mlir::ModuleOp> importFIRFile(llvm::SourceMgr &sourceMgr,

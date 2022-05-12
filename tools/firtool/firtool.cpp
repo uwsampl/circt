@@ -188,6 +188,11 @@ static cl::opt<bool>
                        cl::init(false), cl::cat(mainCategory));
 
 static cl::opt<bool>
+    stripFIRFileLocations("strip-fir-file-locators",
+                          cl::desc("strip locations in the .fir file"),
+                          cl::init(false), cl::cat(mainCategory));
+
+static cl::opt<bool>
     lowerCHIRRTL("lower-chirrtl",
                  cl::desc("lower CHIRRTL memories to FIRRTL memories"),
                  cl::init(true), cl::cat(mainCategory));
@@ -438,6 +443,7 @@ processBuffer(MLIRContext &context, TimingScope &ts, llvm::SourceMgr &sourceMgr,
     options.ignoreInfoLocators = ignoreFIRLocations;
     options.rawAnnotations = newAnno;
     options.numAnnotationFiles = numAnnotationFiles;
+    options.makeFileLocatorsInvisible = stripFIRFileLocations;
     module = importFIRFile(sourceMgr, &context, parserTimer, options);
   } else {
     auto parserTimer = ts.nest("MLIR Parser");
