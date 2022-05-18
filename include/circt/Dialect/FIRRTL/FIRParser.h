@@ -40,14 +40,9 @@ struct FIRParserOptions {
   /// source manager.
   unsigned numAnnotationFiles;
 
-  /// If true, source locations of a fir file are wrapped by `NamedLoc`
-  /// to omit locations at ExportVerilog.
-  /// FIXME: It is hacky to rely on the fact that `NamedLoc` is not printed at
-  /// ExportVerilog. We should instead introduce a custom source location
-  /// attribute, such as `InvisibleLocAttr` to explicitly indicate that source
-  /// locators should not be printed. Currently, it is not possible since MLIR
-  /// source locators are not customizable.
-  bool makeFileLocatorsInvisible = true;
+  /// If true, "doNotPrint" attribute is attached to source locations of a fir
+  /// file  so that we can omit locations at ExportVerilog.
+  bool makeFirLocatorsInvisibleLoc = true;
 };
 
 mlir::OwningOpRef<mlir::ModuleOp> importFIRFile(llvm::SourceMgr &sourceMgr,

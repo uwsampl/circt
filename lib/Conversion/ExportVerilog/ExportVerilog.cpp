@@ -395,10 +395,14 @@ static void collectFileLineColLocs(Location loc,
                                    SmallPtrSet<Attribute, 8> &locationSet) {
   if (auto fileLoc = loc.dyn_cast<FileLineColLoc>())
     locationSet.insert(fileLoc);
-
-  if (auto fusedLoc = loc.dyn_cast<FusedLoc>())
+  else if (auto fusedLoc = loc.dyn_cast<FusedLoc>()) {
+    if (auto metadata =
+            fusedLoc.getMetadata().dyn_cast_or_null<DictionaryAttr>())
+      if (metadata.contains("doNotPrint"))
+        return;
     for (auto loc : fusedLoc.getLocations())
       collectFileLineColLocs(loc, locationSet);
+  }
 }
 
 /// Return the location information as a (potentially empty) string.

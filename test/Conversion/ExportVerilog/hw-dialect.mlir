@@ -928,10 +928,10 @@ hw.module @renameKeyword(%a: !hw.struct<repeat: i1, repeat_0: i1>) -> (r1: !hw.s
   hw.output %a : !hw.struct<repeat: i1, repeat_0: i1>
 }
 
-// CHECK-LABEL: checkNamedLocNotPrinted
-hw.module @checkNamedLocNotPrinted(%a: i2) -> (b:i2){
-// CHECK-NOT: dont_print_locations
-  %0 = comb.add %a, %a : i2 loc(""("dont_print_locations":0:0))
+// CHECK-LABEL: checkLocNotPrinted
+hw.module @checkLocNotPrinted(%a: i2) -> (b:i2){
+// CHECK-NOT: XX.fir
+  %0 = comb.add %a, %a : i2 loc(fused<{doNotPrint}>["XX.fir":123:19])
   hw.output %0: i2
 }
 

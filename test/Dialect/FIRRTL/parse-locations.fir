@@ -1,4 +1,5 @@
 ; RUN: circt-translate -import-firrtl --mlir-print-debuginfo -verify-diagnostics -mlir-print-local-scope %s | FileCheck %s
+; RUN: firtool -parse-only --mlir-print-debuginfo -strip-fir-file-locators -mlir-print-local-scope %s | FileCheck --check-prefix=STRIP %s
 
 circuit MyModule :  @[CIRCUIT.scala 127]
 
@@ -25,9 +26,12 @@ circuit MyModule :  @[CIRCUIT.scala 127]
   ; CHECK: } loc("Filename With Space.scala":1:2)
 
   ; CHECK-LABEL: firrtl.module private @M3
+  ; STRIP-LABEL: firrtl.module private @M3
+
   module M3 :   @[NoSpaceInLocator]   ; expected-warning {{ignoring unknown @ info record format}}
     input in: UInt
   ; CHECK: } loc({{.*}}test{{.*}}Dialect{{.*}}FIRRTL{{.*}}parse-locations.fir"
+  ; STRIP: } loc(fused<{doNotPrint}>[{{.*}}test{{.*}}Dialect{{.*}}FIRRTL{{.*}}parse-locations.fir"
 
 
   ; CHECK-LABEL: firrtl.module private @Subexpressions

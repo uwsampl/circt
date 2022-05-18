@@ -187,7 +187,9 @@ struct SharedParserConstants {
   SharedParserConstants(MLIRContext *context, FIRParserOptions options)
       : context(context), options(options),
         emptyArrayAttr(ArrayAttr::get(context, {})),
-        emptyStringAttr(StringAttr::get(context, "")),
+        invisibleLocationAttr(DictionaryAttr::get(
+            context, {NamedAttribute(StringAttr::get(context, "doNotPrint"),
+                                     UnitAttr::get(context))})),
         loIdentifier(StringAttr::get(context, "lo")),
         hiIdentifier(StringAttr::get(context, "hi")),
         amountIdentifier(StringAttr::get(context, "amount")),
@@ -214,8 +216,9 @@ struct SharedParserConstants {
   /// An empty array attribute.
   const ArrayAttr emptyArrayAttr;
 
-  /// An empty string attribute.
-  const StringAttr emptyStringAttr;
+  /// An attribute to indicate that locations should be omitted at
+  /// ExportVerilog.
+  const DictionaryAttr invisibleLocationAttr;
 
   /// Cached identifiers used in primitives.
   const StringAttr loIdentifier, hiIdentifier, amountIdentifier;
@@ -276,8 +279,9 @@ struct FIRParser {
   /// attachment to the IR.
   Location translateLocation(llvm::SMLoc loc) {
     auto location = lexer.translateLocation(loc);
-    if (constants.options.makeFileLocatorsInvisible)
-      return mlir::NameLoc::get(constants.emptyStringAttr, location);
+    if (constants.options.makeFirLocatorsInvisibleLoc)
+      return mlir::FusedLoc::get({location}, constants.invisibleLocationAttr,
+                                 getContext());
 
     return location;
   }
