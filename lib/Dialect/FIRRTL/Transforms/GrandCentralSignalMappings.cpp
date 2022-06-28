@@ -168,6 +168,13 @@ LogicalResult circt::firrtl::applyGCTSignalMappings(AnnoPathValue target,
                         prefix.consume_front("|"));
   fields.append("isSubCircuit", BoolAttr::get(context, isSubCircuit));
 
+  auto dontTouch = [&](StringRef targetStr) {
+    NamedAttrList anno;
+    anno.append("class", StringAttr::get(context, dontTouchAnnoClass));
+    anno.append("target", StringAttr::get(context, targetStr));
+    state.addToWorklistFn(DictionaryAttr::get(context, anno));
+  };
+
   StringSet<> modules;
   auto buildSourceOrSinkAnno = [&](Attribute attr,
                                    bool isSource) -> DictionaryAttr {
@@ -200,6 +207,13 @@ LogicalResult circt::firrtl::applyGCTSignalMappings(AnnoPathValue target,
                   StringAttr::get(context, isSubCircuit ? "local" : "remote"));
     fields.append("target", targetAttr);
     fields.append("targetId", targetId);
+
+    // TODO: Always applying DontTouchAnnotation to a target is too restrictive.
+    // This should only be necessary if this is a source (which will produce a
+    // force) and we are in the circuit where the force will be applied.  Relax
+    // this restriction in the future.
+    dontTouch(targetAttr.getValue());
+
     return DictionaryAttr::get(context, fields);
   };
 

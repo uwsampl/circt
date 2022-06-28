@@ -588,15 +588,21 @@ firrtl.circuit "Sub"  attributes {
 //
 // CHECK:         firrtl.module @Sub()
 // CHECK-SAME:      {class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.module", id = [[id]] : i64}
-// CHECK-NEXT:      %clockSource = firrtl.wire
+// CHECK-NEXT:      %clockSource = firrtl.wire sym @[[_:[^ ]+]]
 // CHECK-SAME:        {class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "source", id = [[id]] : i64, peer = "~Top|Top>clock", side = "local", targetId = {{[0-9]+}} : i64}
-// CHECK-NEXT:      %clockSink = firrtl.wire
+// CHECK-NEXT:      %clockSink = firrtl.wire sym @[[_:[^ ]+]]
 // CHECK-SAME:        {class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "sink", id = [[id]] : i64, peer = "~Top|Foo>clock", side = "local", targetId = {{[0-9]+}} : i64}
 // CHECK-NEXT:      %dataSource = firrtl.wire
 // CHECK-SAME:        {circt.fieldID = 3 : i32, class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "source", id = [[id]] : i64, peer = "~Top|Foo>dataOut.p", side = "local", targetId = {{[0-9]+}} : i64}
+// CHECK-SAME:        {circt.fieldID = 3 : i32, class = "firrtl.transforms.DontTouchAnnotation"}
 // CHECK-SAME:        {circt.fieldID = 2 : i32, class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "source", id = [[id]] : i64, peer = "~Top|Foo>dataOut.w", side = "local", targetId = {{[0-9]+}} : i64}
+// CHECK-SAME:        {circt.fieldID = 2 : i32, class = "firrtl.transforms.DontTouchAnnotation"}
 // CHECK-SAME:        {circt.fieldID = 1 : i32, class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "source", id = [[id]] : i64, peer = "~Top|Foo>dataOut.x.y.z", side = "local", targetId = {{[0-9]+}} : i64}
+// CHECK-SAME:        {circt.fieldID = 1 : i32, class = "firrtl.transforms.DontTouchAnnotation"}
 // CHECK-NEXT:      %dataSink = firrtl.wire
 // CHECK-SAME:        {circt.fieldID = 3 : i32, class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "sink", id = [[id]] : i64, peer = "~Top|Foo>dataIn.e", side = "local", targetId = {{[0-9]+}} : i64}
+// CHECK-SAME:        {circt.fieldID = 3 : i32, class = "firrtl.transforms.DontTouchAnnotation"}
 // CHECK-SAME:        {circt.fieldID = 2 : i32, class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "sink", id = [[id]] : i64, peer = "~Top|Foo>dataIn.d", side = "local", targetId = {{[0-9]+}} : i64}
+// CHECK-SAME:        {circt.fieldID = 2 : i32, class = "firrtl.transforms.DontTouchAnnotation"}
 // CHECK-SAME:        {circt.fieldID = 1 : i32, class = "sifive.enterprise.grandcentral.SignalDriverAnnotation.target", dir = "sink", id = [[id]] : i64, peer = "~Top|Foo>dataIn.a.b.c", side = "local", targetId = {{[0-9]+}} : i64}
+// CHECK-SAME:        {circt.fieldID = 1 : i32, class = "firrtl.transforms.DontTouchAnnotation"}
