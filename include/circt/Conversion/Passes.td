@@ -148,6 +148,20 @@ def CalyxToHW : Pass<"lower-calyx-to-hw", "mlir::ModuleOp"> {
 }
 
 //===----------------------------------------------------------------------===//
+// CombToLakeroad
+//===----------------------------------------------------------------------===//
+
+def CombToLakeroad : Pass<"lower-comb-to-lakeroad", "mlir::ModuleOp"> {
+  let summary = "Lower Comb to Lakeroad";
+  let description = [{
+    This pass lowers Comb to Lakeroad.
+  }];
+  let constructor = "circt::createCombToLakeroadPass()";
+  let dependentDialects = ["comb::CombDialect", "hw::HWDialect",
+                           "seq::SeqDialect", "sv::SVDialect"];
+}
+
+//===----------------------------------------------------------------------===//
 // FIRRTLToHW
 //===----------------------------------------------------------------------===//
 
